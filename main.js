@@ -12,11 +12,21 @@ document.body.appendChild(canvas);
 
 //Create layers
 let structure = [
-	new neataptic.Layer.Dense(2),
+	new neataptic.Layer.Dense(2),	//Input
 	new neataptic.Layer.Dense(5),
 	new neataptic.Layer.Dense(5),
-	new neataptic.Layer.Dense(2)
+	new neataptic.Layer.Dense(5),
+	new neataptic.Layer.Dense(2)	//Output
 ];
+
+//Change activation function (input/output layers stays logistic)
+for (var i = 1; i < structure.length-1; i++) {
+	for (var j = 0; j < structure[i].nodes[0].nodes.length; j++) {
+		structure[i].nodes[0].nodes[j].squash = 
+			i <= 2 ? activation.TANH :  //Two first hidden layers
+			activation.RELU;			//Third and last hidden layer
+	}
+}
 
 //Connect layers
 for (var i = 0; i < structure.length-1; i++) {
@@ -25,15 +35,14 @@ for (var i = 0; i < structure.length-1; i++) {
 
 //Create NN from layers
 let nn = new neataptic.architect.Construct(structure);
-console.log(nn);
 
-//Lower/raise random initial weights
+//Lower/raise initial random weights
 let connLength = nn.connections.length;
 for (var i = 0; i < connLength; i++) {
 	nn.connections[i].weight /= 10;
 }
 
-//Create random cloud of points
+//Create cloud random of points
 let point = [];
 let nbPoint = 3;
 for (let i=0; i<nbPoint; i++){
