@@ -10,15 +10,28 @@ canvas.style.width = width;
 canvas.style.height = height;
 document.body.appendChild(canvas);
 
-//let nn = new synaptic.Architect.Perceptron(2,5,5,5,5,2);
-let nn = new neataptic.architect.Perceptron(2,5,5,5,2);
+//Create layers
+let structure = [
+	new neataptic.Layer.Dense(2),
+	new neataptic.Layer.Dense(5),
+	new neataptic.Layer.Dense(5),
+	new neataptic.Layer.Dense(2)
+];
+
+//Connect layers
+for (var i = 0; i < structure.length-1; i++) {
+	structure[i].connect(structure[i+1]);
+}
+
+//Create NN from layers
+let nn = new neataptic.architect.Construct(structure);
+console.log(nn);
 
 //Lower/raise random initial weights
 let connLength = nn.connections.length;
 for (var i = 0; i < connLength; i++) {
 	nn.connections[i].weight /= 10;
 }
-
 
 //Create random cloud of points
 let point = [];
