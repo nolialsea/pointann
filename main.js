@@ -19,10 +19,12 @@ for (var i = 0; i < connLength; i++) {
 	nn.connections[i].weight /= 10;
 }
 
-let pix = [];
-let nbPixel = 3;
-for (let i=0; i<nbPixel; i++){
-	pix.push([Math.random(), Math.random()]);
+
+//Create random cloud of points
+let point = [];
+let nbPoint = 3;
+for (let i=0; i<nbPoint; i++){
+	point.push([Math.random(), Math.random()]);
 }
 
 (function render() {
@@ -30,9 +32,10 @@ for (let i=0; i<nbPixel; i++){
 	ctx.fillStyle = "rgba(0,0,0,0.05)";
 	ctx.fillRect(0, 0, width, height);
 	
+	//Transforms and draw points
 	ctx.fillStyle = "rgba(255,255,255,1)";
-	for (let i=0; i<nbPixel; i++){
-		ctx.fillRect(pix[i][0]*width, pix[i][1]*height, 1, 1);
-		pix[i] = nn.activate(pix[i]);
+	for (let i=0; i<nbPoint; i++){
+		ctx.fillRect(point[i][0]*width, point[i][1]*height, 1, 1);
+		point[i] = nn.activate(point[i]);
 	}
 })()
